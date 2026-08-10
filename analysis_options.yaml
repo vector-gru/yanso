@@ -1,0 +1,47 @@
+# Root analysis_options.yaml for the Yanso monorepo.
+#
+# Each sub-package (apps/yanso, packages/nso_calendar) inherits from this
+# file via the 'include' directive in their own analysis_options.yaml.
+#
+# Rules here apply to any Dart code that doesn't have its own override.
+
+include: package:lints/recommended.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+  errors:
+    # Treat missing returns as errors, not warnings.
+    missing_return: error
+    # Dead code should be fixed, not ignored.
+    dead_code: warning
+    # Unused imports are noise.
+    unused_import: warning
+    # Unused local variables.
+    unused_local_variable: warning
+
+linter:
+  rules:
+    # --- Style ---
+    prefer_single_quotes: true
+    always_declare_return_types: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_locals: true
+    use_super_parameters: true
+
+    # --- Safety ---
+    avoid_dynamic_calls: true
+    avoid_print: true         # Use a proper logger; print leaks to console in prod.
+    unawaited_futures: true
+
+    # --- Documentation ---
+    # Public API should be documented, especially in the calendar engine.
+    public_member_api_docs: false  # Set to true when approaching a public release.
+
+    # --- Collections ---
+    prefer_collection_literals: true
+    avoid_function_literals_in_foreach_calls: true

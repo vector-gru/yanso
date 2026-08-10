@@ -1,0 +1,28 @@
+# Analysis options for the yanso Flutter app.
+# Inherits from the monorepo root and adds Flutter-specific rules.
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+  errors:
+    missing_return: error
+    dead_code: warning
+    unused_import: warning
+    unused_local_variable: warning
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    always_declare_return_types: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_locals: true
+    use_super_parameters: true
+    avoid_print: true
+    unawaited_futures: true
+    prefer_collection_literals: true

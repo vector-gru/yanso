@@ -1,0 +1,122 @@
+name: CI
+
+# Runs on every push and pull request.
+# Three jobs run in parallel:
+#   1. nso_calendar — dart analyze + dart test (pure Dart, no Flutter needed)
+#   2. yanso_app    — flutter analyze + flutter test
+#   3. build_check  — flutter build apk --debug (confirms the app compiles end-to-end)
+#
+# The calendar engine job is the most critical: it guards the conversion rules.
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  FLUTTER_VERSION: '3.44.1'
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: nso_calendar package — pure Dart
+  # ---------------------------------------------------------------------------
+  nso_calendar:
+    name: nso_calendar — analyze & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Dart (via Flutter)
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: packages/nso_calendar
+        run: dart pub get
+
+      - name: Analyze
+        working-directory: packages/nso_calendar
+        run: dart analyze --fatal-infos
+
+      - name: Run tests
+        working-directory: packages/nso_calendar
+        run: dart test --reporter=expanded
+
+      # Upload test results so they appear in the GitHub Actions summary.
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nso_calendar-test-results
+          path: packages/nso_calendar/.dart_tool/
+
+  # ---------------------------------------------------------------------------
+  # Job 2: yanso Flutter app — analyze & test
+  # ---------------------------------------------------------------------------
+  yanso_app:
+    name: yanso app — analyze & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: apps/yanso
+        run: flutter pub get
+
+      - name: Analyze
+        working-directory: apps/yanso
+        run: flutter analyze --fatal-infos
+
+      - name: Run tests
+        working-directory: apps/yanso
+        run: flutter test --reporter=expanded
+
+  # ---------------------------------------------------------------------------
+  # Job 3: build check — confirms the app compiles end-to-end
+  # Runs only on PRs to main to keep CI fast on feature branches.
+  # ---------------------------------------------------------------------------
+  build_check:
+    name: yanso app — build (Android debug)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    needs: [nso_calendar, yanso_app]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Set up Java (required for Android builds)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install dependencies
+        working-directory: apps/yanso
+        run: flutter pub get
+
+      - name: Build Android debug APK
+        working-directory: apps/yanso
+        run: flutter build apk --debug --no-pub

@@ -1,0 +1,20 @@
+name: nso_calendar
+description: >
+  The Nso calendar engine for Yanso.
+  Provides Gregorian ↔ Nso date conversion, the eight-day Nso week,
+  and the twelve Lamnso months.
+  This is a standalone Dart package with no Flutter dependency,
+  so it can eventually be published to pub.dev independently.
+version: 0.1.0
+repository: https://github.com/yanso-project/yanso
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+# No runtime dependencies intentionally.
+# The calendar engine is pure Dart with no external packages.
+dependencies:
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0

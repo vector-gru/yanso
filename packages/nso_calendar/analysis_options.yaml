@@ -1,0 +1,30 @@
+# Analysis options for the nso_calendar Dart package.
+# Stricter than the app because this is a standalone library.
+
+include: package:lints/recommended.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+  errors:
+    missing_return: error
+    dead_code: warning
+    unused_import: warning
+    unused_local_variable: warning
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    always_declare_return_types: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_locals: true
+    use_super_parameters: true
+    avoid_print: true
+    unawaited_futures: true
+    prefer_collection_literals: true
+    # Library packages should document their public API.
+    public_member_api_docs: true

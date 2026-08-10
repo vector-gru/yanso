@@ -4,473 +4,286 @@
 
 Yanso is an open-source Flutter project created to preserve, document, and promote the traditional calendar and cultural knowledge of the **Nso people of Cameroon**.
 
-The project focuses on the traditional Nso system of timekeeping, including its **eight-day week**, Lamnso month names, traditional days, cultural events, and other knowledge connected to the Nso understanding of time.
+The project focuses on the traditional Nso system of timekeeping — the **eight-day week**, Lamnso month names, traditional days, cultural events, and other knowledge connected to the Nso understanding of time.
 
-Yanso is more than a calendar app.
+Yanso is more than a calendar app. It is a small digital effort to help keep Nso culture accessible to younger generations and to Nso people around the world.
 
-It is a small digital effort to help keep Nso culture accessible to younger generations and to Nso people around the world.
-
----
-
-## Vision
-
-Nso culture contains knowledge that has traditionally been passed from one generation to another through families, elders, traditional institutions, stories, language, ceremonies, and everyday life.
-
-Some of this knowledge is becoming harder for younger generations to access.
-
-Yanso aims to use technology to help preserve part of that knowledge.
-
-The long-term vision is to build a reliable digital reference for:
-
-* The Nso calendar
-* The eight-day Nso week
-* Lamnso month names
-* Traditional days and their meanings
-* Nso cultural events
-* Traditional festivals
-* Important historical dates
-* Lamnso terminology
-* Cultural explanations
-* Audio pronunciation
-* Stories and oral history
-* Traditional knowledge contributed by the Nso community
+**Current status:** Phase 1 — calendar engine development and research verification.
 
 ---
 
-## The Nso Week
+## Repository layout
 
-The traditional Nso week has **eight days**.
-
-The calendar therefore differs from the commonly used Gregorian seven-day week.
-
-The project will preserve the Nso day names and their traditional meanings rather than treating them simply as alternative names for Monday, Tuesday, Wednesday, etc.
-
-The current research data includes the following eight-day cycle:
-
-1. Ntagrin
-2. Kavi
-3. Reeveiy
-4. Kiloveiy
-5. Nseeri
-6. Geeggee
-7. Ngoilum
-8. Waiylun
-
-> **Important:** Nso names can have different spellings and representations. Yanso will therefore maintain alternate spellings and source information instead of assuming that one spelling is always the only correct form.
-
----
-
-## Nso Months
-
-The traditional Lamnso calendar uses its own month names.
-
-The current calendar data includes:
-
-1. Mfiilum
-2. Kifir
-3. Kiŋmgbù ke wuu
-4. Vishévti
-5. Ma'an san
-6. Ma'an saar
-7. Ntoòbiŋ
-8. Tònŋkin
-9. ŋkivin
-10. Verə̀mrə̀m
-11. Sán
-12. Ntinen Saar
-
-The project will document the meaning, pronunciation, cultural significance, and variations of these names as reliable information becomes available.
-
----
-
-## Cultural Accuracy
-
-Cultural accuracy is a core principle of Yanso.
-
-The project will not treat information found online as automatically correct.
-
-Where possible, cultural information should be verified through:
-
-* Nso elders
-* Traditional authorities
-* Cultural organizations
-* Lamnso speakers
-* Historians
-* Researchers
-* Existing cultural documentation
-* Community contributors
-
-When different versions exist, Yanso should document the variation instead of silently choosing one version.
-
-Every important cultural fact should eventually have a source or provenance record.
-
----
-
-## Features
-
-### V1 — Calendar
-
-* [ ] Nso eight-day week
-* [ ] Nso month names
-* [ ] Current Nso date
-* [ ] Gregorian date ↔ Nso date conversion
-* [ ] Month view
-* [ ] Year view
-* [ ] Today indicator
-* [ ] Navigate between months
-* [ ] Navigate between years
-* [ ] Display Nso and Gregorian dates together
-
-### V2 — Cultural Calendar
-
-* [ ] Traditional rest days
-* [ ] Cultural events
-* [ ] Traditional festivals
-* [ ] Important Nso dates
-* [ ] Cultural explanations
-* [ ] Event details
-
-### V3 — Lamnso
-
-* [ ] Lamnso terminology
-* [ ] Day pronunciation
-* [ ] Month pronunciation
-* [ ] Audio recordings
-* [ ] English ↔ Lamnso explanations
-
-### V4 — Cultural Archive
-
-* [ ] Stories
-* [ ] Historical information
-* [ ] Oral history
-* [ ] Traditional knowledge
-* [ ] Cultural photographs
-* [ ] Audio recordings
-* [ ] Community contributions
-
----
-
-## Design Principles
-
-### 1. Culture first
-
-The calendar should represent the Nso system rather than forcing Nso culture into a Gregorian calendar model.
-
-### 2. Accuracy over assumptions
-
-When information is uncertain, the project should mark it as uncertain and seek verification.
-
-### 3. Preserve variations
-
-Different communities, families, elders, researchers, and sources may use different spellings or interpretations.
-
-Yanso should preserve these differences as part of the cultural record.
-
-### 4. Offline first
-
-The basic calendar should work without an internet connection.
-
-Users should be able to view the calendar and cultural information without requiring a network connection.
-
-### 5. Open source
-
-The code should remain open so that Nso developers and contributors can improve it.
-
-### 6. Community ownership
-
-Yanso should grow with contributions from the Nso community.
-
-Technology should support the culture, not replace cultural authorities.
-
----
-
-## Flutter Architecture
-
-Yanso is built with Flutter.
-
-The project should keep the calendar calculation engine separate from the user interface.
-
-A major goal is to make the calendar logic independently testable.
-
-```text
-lib/
-├── app/
-│   ├── app.dart
-│   ├── router/
-│   └── theme/
-│
-├── core/
-│   ├── constants/
-│   ├── extensions/
-│   ├── utils/
-│   └── errors/
-│
-├── features/
-│   ├── calendar/
-│   │   ├── data/
-│   │   ├── domain/
-│   │   └── presentation/
-│   │
-│   ├── culture/
-│   │   ├── data/
-│   │   ├── domain/
-│   │   └── presentation/
-│   │
-│   └── settings/
-│       ├── data/
-│       ├── domain/
-│       └── presentation/
-│
-├── shared/
-│   ├── widgets/
-│   └── models/
-│
-└── main.dart
 ```
-
----
-
-## Calendar Domain Model
-
-The calendar engine should not depend on Flutter widgets.
-
-For example:
-
-```text
-NsoCalendar
-    ├── NsoYear
-    ├── NsoMonth
-    ├── NsoDay
-    ├── NsoWeekday
-    └── DateConversion
-```
-
-The UI should consume this domain layer.
-
-This makes it possible to eventually create:
-
-* Android app
-* iOS app
-* Web app
-* Desktop app
-* Dart calendar package
-* API
-
-without rewriting the calendar rules.
-
----
-
-## Data Model
-
-Cultural data should remain separate from UI code.
-
-Example:
-
-```text
-NsoMonth
-├── id
-├── name
-├── alternateNames
-├── order
-├── description
-├── pronunciation
-└── sources
-
-NsoWeekday
-├── id
-├── name
-├── shortName
-├── alternateNames
-├── order
-├── description
-├── culturalMeaning
-├── isRestDay
-└── sources
-
-CulturalEvent
-├── id
-├── name
-├── description
-├── dateRule
-├── location
-├── culturalSignificance
-└── sources
-```
-
----
-
-## Project Structure
-
-The repository should eventually contain:
-
-```text
 yanso/
-├── android/
-├── ios/
-├── web/
-├── macos/
-├── linux/
-├── windows/
+├── apps/
+│   └── yanso/                   # Flutter application (Android, iOS, Web, macOS)
 │
-├── lib/
-├── test/
-├── integration_test/
-│
-├── assets/
-│   ├── audio/
-│   ├── images/
-│   ├── icons/
-│   └── data/
+├── packages/
+│   └── nso_calendar/            # Standalone Dart calendar engine
+│                                # (no Flutter dependency — publishable to pub.dev)
 │
 ├── docs/
-│   ├── calendar/
-│   ├── culture/
 │   ├── research/
+│   │   ├── calendar_sources.md  # Source registry and provenance records
+│   │   └── open_questions.md    # Unresolved research questions
+│   ├── calendar/
+│   │   └── nso_calendar_spec.md # Working calendar specification
 │   └── architecture/
+│       └── overview.md          # Technical architecture notes
 │
 ├── .github/
-│   ├── workflows/
-│   ├── ISSUE_TEMPLATE/
+│   ├── workflows/ci.yml         # GitHub Actions: analyze, test, build
+│   ├── ISSUE_TEMPLATE/          # Bug, cultural correction, calendar verification
 │   └── pull_request_template.md
 │
-├── analysis_options.yaml
-├── pubspec.yaml
+├── analysis_options.yaml        # Shared lint rules
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
-├── LICENSE
-└── README.md
+└── LICENSE
 ```
 
 ---
 
-## Research and Sources
+## The calendar engine
 
-Yanso should keep a record of the sources used to define the calendar.
+The Nso calendar engine lives in `packages/nso_calendar`.
 
-This is important because cultural information can have different versions.
+It is a **pure Dart package** with no Flutter dependency. This means it can eventually be published as a standalone pub.dev package, so any Dart or Flutter project can use it:
 
-Research should record:
+```dart
+import 'package:nso_calendar/nso_calendar.dart';
 
-* Source title
-* Author
-* Publication date
-* URL or publication reference
-* Information obtained
-* Date added to Yanso
-* Verification status
+final today = NsoCalendar.today();
+print(today.weekday.name);   // e.g. "Ntagrin"
+print(today.month.name);     // e.g. "Mfiilum"
+print(today.toDisplayString()); // e.g. "Ntagrin, 3 Mfiilum 1426"
+```
 
-The project should never present an uncertain cultural claim as established fact.
+### What is implemented
+
+| Component                  | File                       | Status                                           |
+| -------------------------- | -------------------------- | ------------------------------------------------ |
+| 8-day Nso weekday cycle    | `lib/src/nso_weekday.dart` | Phase 1 data — needs verification                |
+| 12 Lamnso months           | `lib/src/nso_month.dart`   | Phase 1 data — needs verification                |
+| `NsoDate` value type       | `lib/src/nso_date.dart`    | Stable                                           |
+| Gregorian ↔ Nso conversion | `lib/src/conversion.dart`  | Working model — anchor unverified                |
+| High-level API             | `lib/src/calendar.dart`    | Stable                                           |
+| Unit tests                 | `test/`                    | 44 passing, 1 skipped (verified reference dates) |
+
+### Important: research status
+
+The conversion algorithm uses a **placeholder anchor date** (2024-01-01 = Ntagrin).
+This placeholder makes the weekday cycle structurally correct but potentially offset from the real Nso calendar.
+
+The "Verified reference dates" test group in `test/conversion_test.dart` is intentionally **skipped** until a confirmed Gregorian ↔ Nso date pairing is obtained from a trusted source.
+
+**Phase 1 is complete when that test group has at least one passing test.**
+
+See `docs/research/open_questions.md` for the full checklist.
+
+---
+
+## The Nso eight-day week
+
+| Order | Name     | Short |
+| ----- | -------- | ----- |
+| 1     | Ntagrin  | Ntg   |
+| 2     | Kavi     | Kav   |
+| 3     | Reeveiy  | Rev   |
+| 4     | Kiloveiy | Kil   |
+| 5     | Nseeri   | Nse   |
+| 6     | Geeggee  | Gee   |
+| 7     | Ngoilum  | Ngo   |
+| 8     | Waiylun  | Wai   |
+
+Spelling variations exist across sources. Yanso records alternate spellings rather than silently choosing one version. See `docs/research/calendar_sources.md`.
+
+---
+
+## The twelve Lamnso months
+
+| Order | Name           |
+| ----- | -------------- |
+| 1     | Mfiilum        |
+| 2     | Kifir          |
+| 3     | Kiŋmgbù ke wuu |
+| 4     | Vishévti       |
+| 5     | Ma'an san      |
+| 6     | Ma'an saar     |
+| 7     | Ntoòbiŋ        |
+| 8     | Tònŋkin        |
+| 9     | ŋkivin         |
+| 10    | Verə̀mrə̀m       |
+| 11    | Sán            |
+| 12    | Ntinen Saar    |
+
+---
+
+## The Flutter app
+
+The Flutter app lives in `apps/yanso` and consumes `packages/nso_calendar`.
+
+**Tech stack:**
+
+- Flutter / Dart
+- Riverpod — state management
+- go_router — navigation
+- intl — Gregorian date formatting
+- No database in Phase 1 — pure Dart data and the calendar engine
+
+**Phase 1 app features:**
+
+- Today's Nso date displayed on launch
+- Calendar grid with 8-column layout (one column per Nso weekday)
+- Month navigation
+- Light and dark theme
+
+---
+
+## Getting started
+
+### Prerequisites
+
+- Flutter ≥ 3.0 / Dart ≥ 3.0
+
+### Install dependencies
+
+```bash
+# Calendar engine
+cd packages/nso_calendar
+dart pub get
+
+# Flutter app
+cd apps/yanso
+flutter pub get
+```
+
+### Run the tests
+
+```bash
+# Calendar engine tests (the most important ones)
+cd packages/nso_calendar
+dart test
+
+# App tests
+cd apps/yanso
+flutter test
+```
+
+### Run the app
+
+```bash
+cd apps/yanso
+flutter run
+```
+
+---
+
+## CI
+
+GitHub Actions runs three jobs on every push and pull request:
+
+| Job            | Trigger            | What it does                       |
+| -------------- | ------------------ | ---------------------------------- |
+| `nso_calendar` | All pushes and PRs | `dart analyze` + `dart test`       |
+| `yanso_app`    | All pushes and PRs | `flutter analyze` + `flutter test` |
+| `build_check`  | PRs to `main` only | `flutter build apk --debug`        |
+
+---
+
+## Phase 1 milestone
+
+> **Can Yanso correctly answer: What is today's Nso date?**
+
+This requires a verified anchor date — a Gregorian date whose corresponding Nso weekday is confirmed by a trusted Nso source (yanso.org, a Nso elder, or a Lamnso speaker).
+
+Once confirmed:
+
+1. Update `_kAnchorGregorianDate` and `_kAnchorNsoWeekdayOrder` in `packages/nso_calendar/lib/src/conversion.dart`
+2. Remove the `skip:` from the "Verified reference dates" group in `packages/nso_calendar/test/conversion_test.dart`
+3. Document the source in `docs/research/calendar_sources.md`
+
+If you have this information, please open a **Calendar verification** issue.
 
 ---
 
 ## Roadmap
 
-### Phase 1 — Foundation
+### Phase 1 — Calendar engine ← _current_
 
-* [ ] Create Flutter project
-* [ ] Define Nso calendar domain models
-* [ ] Define eight-day week
-* [ ] Define month data
-* [ ] Build calendar calculation engine
-* [ ] Add Gregorian ↔ Nso conversion
-* [ ] Write unit tests
+- [x] Monorepo structure
+- [x] `nso_calendar` Dart package
+- [x] Eight-day week, twelve months
+- [x] Gregorian ↔ Nso conversion engine (working model)
+- [x] 44 unit tests
+- [x] Flutter app scaffold
+- [ ] **Verify anchor date against trusted Nso source**
+- [ ] Pass verified reference date tests
 
 ### Phase 2 — Calendar UI
 
-* [ ] Month view
-* [ ] Year view
-* [ ] Day details
-* [ ] Current date
-* [ ] Nso/Gregorian date display
-* [ ] Navigation
+- [ ] Month view with Nso + Gregorian dates
+- [ ] Year view
+- [ ] Day details
+- [ ] Navigation
 
-### Phase 3 — Cultural Layer
+### Phase 3 — Cultural layer
 
-* [ ] Traditional rest days
-* [ ] Cultural events
-* [ ] Explanations
-* [ ] Sources and references
+- [ ] Traditional rest days
+- [ ] Cultural events and festivals
+- [ ] Cultural explanations with source citations
 
 ### Phase 4 — Language
 
-* [ ] Lamnso interface
-* [ ] English interface
-* [ ] Pronunciation
-* [ ] Audio
+- [ ] Lamnso interface
+- [ ] Pronunciation guides
+- [ ] Audio recordings
 
 ### Phase 5 — Community
 
-* [ ] Community contribution system
-* [ ] Cultural verification workflow
-* [ ] Elder/researcher review
-* [ ] Cultural archive
+- [ ] Community contributions
+- [ ] Elder/researcher review workflow
+- [ ] Cultural archive
+
+---
+
+## Research and sources
+
+Yanso treats cultural accuracy as a core principle. The project will not present uncertain information as established fact.
+
+Every cultural data point carries a `DataVerificationStatus`:
+
+- `unverified` — not yet checked against a trusted source
+- `partiallyVerified` — found in a written source, not yet confirmed by community
+- `verified` — confirmed through multiple trusted sources or Nso cultural authorities
+- `disputed` — conflicting information exists across sources
+
+Research records live in `docs/research/`. The open questions that must be resolved are in `docs/research/open_questions.md`.
 
 ---
 
 ## Contributing
 
-Contributions are welcome.
+Code contributions and cultural contributions follow different processes.
 
-However, cultural contributions should follow a careful verification process.
+Cultural contributions require a source. See `CONTRIBUTING.md` for details.
 
-For code contributions:
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Add tests where appropriate.
-5. Run formatting and analysis.
-6. Open a pull request.
-
-For cultural information, contributors should provide the source or explain where the information came from.
+The most valuable contribution right now is a **verified Gregorian ↔ Nso date pairing** — one confirmed date that proves which Nso weekday falls on a specific Gregorian date. Open a **Calendar verification** issue if you have this.
 
 ---
 
-## Cultural Responsibility
+## Acknowledgements
 
-Yanso is intended to support the preservation and education of Nso culture.
-
-Some cultural knowledge may be sensitive, sacred, restricted, or intended only for specific traditional institutions.
-
-The project will not assume that all cultural knowledge should be published publicly.
-
-Information should only be included when it is appropriate to share.
+The [Ya Nso' website](https://yanso.org/) has documented the Lamnso calendar since at least 2014. Yanso positions itself as a complementary modern, open-source, mobile-first effort — not as a replacement. We intend to credit existing documentation properly and, where possible, work with people who have already done the hard work of documenting the calendar.
 
 ---
 
 ## License
 
-The software license and cultural-content license may be different.
+Software: MIT — see `LICENSE`.
 
-The project should clearly distinguish between:
-
-* Source code
-* Original documentation
-* Cultural content
-* Photographs
-* Audio recordings
-* Historical material
-* Third-party material
-
-The final licensing model will be defined before the first public release.
-
----
-
-## Name
-
-**Yanso**
-
-The name is inspired by the Nso calendar and the Lamnso cultural context of the project.
-
----
-
-## Status
-
-**Early development**
-
-The calendar rules and cultural data are still being researched and verified.
-
-The project welcomes contributions from Nso people, Lamnso speakers, researchers, historians, developers, and cultural custodians.
+Cultural content in this repository is subject to separate terms, to be defined before the first public release in consultation with Nso cultural authorities. See `LICENSE` for details.
 
 ---
 
@@ -481,11 +294,7 @@ The project welcomes contributions from Nso people, Lamnso speakers, researchers
 Yanso is being built so that a young Nso person anywhere in the world can open an app and learn:
 
 **What day is it in the Nso calendar?**
-
 **What does this day mean?**
-
 **What month is it?**
-
 **What happened on this day?**
-
 **And what should I know about my culture?**

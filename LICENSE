@@ -1,0 +1,39 @@
+MIT License
+
+Copyright (c) 2026 Yanso Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+NOTE ON CULTURAL CONTENT
+
+The MIT license above applies to the software source code only.
+
+Cultural content included in this repository — including but not limited to
+Nso calendar data, Lamnso terminology, cultural event descriptions,
+traditional knowledge, oral history, audio recordings, and photographs —
+may be subject to separate licensing terms.
+
+The licensing model for cultural content will be defined before the first
+public release of Yanso, in consultation with Nso cultural authorities and
+contributors.
+
+Until that model is defined, cultural content in this repository should be
+treated as All Rights Reserved unless a specific content file states otherwise.

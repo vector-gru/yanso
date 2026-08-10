@@ -1,0 +1,45 @@
+name: yanso
+description: >
+  Yanso — The Nso Calendar.
+  An open-source Flutter app to preserve and promote the traditional
+  calendar and cultural knowledge of the Nso people of Cameroon.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.12.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Calendar engine — local domain package (no Flutter dependency).
+  nso_calendar:
+    path: ../../packages/nso_calendar
+
+  # State management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Navigation
+  go_router: ^14.8.1
+
+  # Internationalisation (Gregorian date formatting)
+  intl: ^0.20.2
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^2.6.2
+  build_runner: ^2.4.15
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/data/
+    - assets/images/
+    - assets/icons/
