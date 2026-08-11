@@ -9,6 +9,7 @@ import 'package:nso_calendar/nso_calendar.dart';
 import '../../../../app/router/app_routes.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../domain/calendar_providers.dart';
+import '../widgets/cultural_objects_banner.dart';
 import '../widgets/nso_day_cell.dart';
 import '../widgets/nso_weekday_header.dart';
 
@@ -57,6 +58,8 @@ class CalendarPage extends ConsumerWidget {
           Expanded(
             child: _CalendarGrid(viewMonth: viewMonth, today: today),
           ),
+          // Cultural objects decorative strip
+          const CulturalObjectsBanner(),
           // Legend
           _RestDayLegend(yc: yc),
         ],
