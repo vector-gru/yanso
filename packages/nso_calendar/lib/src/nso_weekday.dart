@@ -46,6 +46,16 @@ class NsoWeekday {
   /// [null] means the rest-day status has not yet been verified.
   final bool? isRestDay;
 
+  /// Whether a traditional market is held on this day.
+  ///
+  /// [null] means the market-day status has not yet been verified.
+  final bool? isMarketDay;
+
+  /// Information about the market held on this day, if [isMarketDay] is true.
+  ///
+  /// Includes market name, location, and cultural context.
+  final NsoMarketInfo? marketInfo;
+
   /// Identifiers of sources that support the data in this record.
   /// Cross-references docs/research/calendar_sources.md.
   final List<String> sourceIds;
@@ -58,6 +68,8 @@ class NsoWeekday {
     this.description,
     this.culturalMeaning,
     this.isRestDay,
+    this.isMarketDay,
+    this.marketInfo,
     this.sourceIds = const [],
   }) : assert(order >= 1 && order <= 8, 'Nso weekday order must be 1..8');
 
@@ -88,10 +100,25 @@ const List<NsoWeekday> kNsoWeekdays = [
     name: 'Kaavi',
     shortName: 'Ka',
     alternateNames: ['Kavi'],
-    description: 'First day of the Nso eight-day week.',
-    culturalMeaning: null,
+    description: 'First day of the Nso eight-day week. The main market day.',
+    culturalMeaning:
+        'The principal market day of the Nso people. Everyone gathers at '
+        "the Mbvə' market in Kimbo' (Kumbo) for trade, socialising, and "
+        'community life. It is one of the most important recurring events '
+        'in the Nso calendar.',
     isRestDay: null,
-    sourceIds: ['yanso-org-2026-08'],
+    isMarketDay: true,
+    marketInfo: NsoMarketInfo(
+      marketName: "Mbvə'",
+      locationNso: "Kimbo'",
+      locationEnglish: 'Kumbo',
+      description: "The main Nso market, held every Kaavi at Kimbo' (Kumbo). "
+          'It draws traders and community members from across Nso land '
+          'and is a central part of economic and social life.',
+      isMainMarket: true,
+      sourceIds: ['yanso-contributor-2026-08'],
+    ),
+    sourceIds: ['yanso-org-2026-08', 'yanso-contributor-2026-08'],
   ),
   NsoWeekday(
     order: 2,
@@ -108,9 +135,11 @@ const List<NsoWeekday> kNsoWeekdays = [
     name: 'Kiloovəy',
     shortName: 'Ki',
     alternateNames: ['Kiloveiy'],
-    description: 'Third day of the Nso eight-day week.',
-    culturalMeaning: null,
-    isRestDay: null,
+    description: 'Third day of the Nso eight-day week. A traditional rest day.',
+    culturalMeaning:
+        'A traditional rest day on which farming and certain activities are '
+        'observed to cease.',
+    isRestDay: true,
     sourceIds: ['yanso-org-2026-08'],
   ),
   NsoWeekday(
@@ -138,9 +167,11 @@ const List<NsoWeekday> kNsoWeekdays = [
     name: 'ŋgoilum',
     shortName: 'ŋg',
     alternateNames: ['Ngoilum'],
-    description: 'Sixth day of the Nso eight-day week.',
-    culturalMeaning: null,
-    isRestDay: null,
+    description: 'Sixth day of the Nso eight-day week. A traditional rest day.',
+    culturalMeaning:
+        'A traditional rest day. Widely observed across Nso communities '
+        'as a day of rest from farm work and certain activities.',
+    isRestDay: true,
     sourceIds: ['yanso-org-2026-08'],
   ),
   NsoWeekday(
@@ -164,3 +195,37 @@ const List<NsoWeekday> kNsoWeekdays = [
     sourceIds: ['yanso-org-2026-08'],
   ),
 ];
+
+/// Holds information about a traditional Nso market associated with a weekday.
+///
+/// Markets are a central feature of Nso social and economic life.
+/// The main market is Mbvə' at Kimbo' (Kumbo), held every Kaavi.
+/// Other smaller markets on different days will be added as they are verified.
+class NsoMarketInfo {
+  /// The Lamnso name of the market.
+  final String marketName;
+
+  /// The location name in Lamnso.
+  final String locationNso;
+
+  /// The location name in English or as commonly known outside Nso.
+  final String locationEnglish;
+
+  /// Description of the market and its cultural significance.
+  final String description;
+
+  /// Whether this is the principal Nso market (Mbvə' at Kimbo').
+  final bool isMainMarket;
+
+  /// Identifiers of sources for this market information.
+  final List<String> sourceIds;
+
+  const NsoMarketInfo({
+    required this.marketName,
+    required this.locationNso,
+    required this.locationEnglish,
+    required this.description,
+    this.isMainMarket = false,
+    this.sourceIds = const [],
+  });
+}
