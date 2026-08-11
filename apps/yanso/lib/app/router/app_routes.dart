@@ -1,10 +1,8 @@
 /// Central registry of all route paths and named-route identifiers.
-///
-/// Using string constants avoids typos and makes it easy to find every
-/// navigation call-site via IDE references.
 abstract final class AppRoutes {
   AppRoutes._();
 
+  /// Calendar shell (month + year tabs). This is the initial route.
   static const String calendar = '/';
   static const String calendarName = 'calendar';
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nso_calendar/nso_calendar.dart';
 
 // nso_calendar re-exports nsoMonthForGregorianMonth — no extra import needed.
 
+import '../../../../app/router/app_routes.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../domain/calendar_providers.dart';
 import '../widgets/nso_day_cell.dart';
@@ -38,6 +40,7 @@ class CalendarPage extends ConsumerWidget {
             tooltip: 'Go to today',
             onPressed: notifier.goToToday,
           ),
+          _OverflowMenu(),
         ],
       ),
       body: Column(
@@ -92,7 +95,7 @@ class _TodayBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Today in Nso',
+                  "Lán ei nsài Nso' (Today in Nso')",
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: Colors.white.withValues(alpha: 0.8),
                     letterSpacing: 1,
@@ -360,6 +363,42 @@ class _LegendItem extends StatelessWidget {
           style: Theme.of(
             context,
           ).textTheme.labelSmall?.copyWith(color: textColor, fontSize: 10),
+        ),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Shared overflow menu (Culture, Settings)
+// ---------------------------------------------------------------------------
+
+class _OverflowMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert),
+      onSelected: (value) => context.goNamed(value),
+      itemBuilder: (_) => const [
+        PopupMenuItem(
+          value: AppRoutes.cultureName,
+          child: Row(
+            children: [
+              Icon(Icons.account_balance_outlined, size: 18),
+              SizedBox(width: 10),
+              Text('Culture'),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: AppRoutes.settingsName,
+          child: Row(
+            children: [
+              Icon(Icons.settings_outlined, size: 18),
+              SizedBox(width: 10),
+              Text('Settings'),
+            ],
+          ),
         ),
       ],
     );
