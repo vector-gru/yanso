@@ -35,6 +35,32 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   riverpod_generator: ^2.6.2
   build_runner: ^2.4.15
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  # Source image — must be at least 1024×1024 px.
+  image_path: "assets/icons/yanso_icon_1024.png"
+
+  # Android — adaptive icon with rounded background colour matching the icon background.
+  android: true
+  adaptive_icon_background: "#2C1A0E"
+  adaptive_icon_foreground: "assets/icons/yanso_icon_1024.png"
+
+  # iOS
+  ios: true
+  remove_alpha_ios: true
+
+  # Web
+  web:
+    generate: true
+    image_path: "assets/icons/yanso_icon_1024.png"
+    background_color: "#2C1A0E"
+    theme_color: "#E8A020"
+
+  # macOS
+  macos:
+    generate: true
+    image_path: "assets/icons/yanso_icon_1024.png"
 
 flutter:
   uses-material-design: true
