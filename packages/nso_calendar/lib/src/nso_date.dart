@@ -37,6 +37,8 @@ class NsoDate {
   /// The Nso year number.
   final int nsoYear;
 
+  /// Creates an [NsoDate] with the given [weekday], [month], [dayOfMonth],
+  /// and [nsoYear].
   const NsoDate({
     required this.weekday,
     required this.month,
@@ -89,6 +91,5 @@ class NsoDate {
           nsoYear == other.nsoYear;
 
   @override
-  int get hashCode =>
-      Object.hash(weekday, month, dayOfMonth, nsoYear);
+  int get hashCode => Object.hash(weekday, month, dayOfMonth, nsoYear);
 }

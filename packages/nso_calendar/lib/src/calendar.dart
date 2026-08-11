@@ -91,7 +91,10 @@ class NsoCalendar {
 }
 
 /// Internal extension — keeps date arithmetic readable inside the engine.
+///
+/// Not part of the public API; used only within the nso_calendar package.
 extension DateTimeExtension on DateTime {
+  /// Returns the number of days in the given Gregorian [month] of [year].
   static int daysInMonth(int year, int month) {
     return DateTime(year, month + 1, 0).day;
   }

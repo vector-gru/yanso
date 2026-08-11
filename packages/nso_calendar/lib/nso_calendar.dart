@@ -17,6 +17,6 @@
 /// The anchor date and year epoch constants in [NsoDateConversion] must be
 /// verified against trusted Nso calendar sources before results can be
 /// considered accurate. See docs/research/calendar_sources.md.
-library nso_calendar;
+library;
 
 export 'src/calendar.dart';

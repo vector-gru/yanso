@@ -55,6 +55,8 @@ class NsoMonth {
   /// Indicates how well this data has been verified.
   final DataVerificationStatus verificationStatus;
 
+  /// Creates an [NsoMonth] with the required [order], [name], [shortName],
+  /// and [gregorianMonthEquivalent], plus optional cultural metadata fields.
   const NsoMonth({
     required this.order,
     required this.name,

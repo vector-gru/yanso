@@ -60,6 +60,8 @@ class NsoWeekday {
   /// Cross-references docs/research/calendar_sources.md.
   final List<String> sourceIds;
 
+  /// Creates an [NsoWeekday] with the required [order], [name], and
+  /// [shortName], plus optional cultural metadata fields.
   const NsoWeekday({
     required this.order,
     required this.name,
@@ -220,6 +222,8 @@ class NsoMarketInfo {
   /// Identifiers of sources for this market information.
   final List<String> sourceIds;
 
+  /// Creates an [NsoMarketInfo] record with the required [marketName],
+  /// [locationNso], [locationEnglish], and [description].
   const NsoMarketInfo({
     required this.marketName,
     required this.locationNso,
