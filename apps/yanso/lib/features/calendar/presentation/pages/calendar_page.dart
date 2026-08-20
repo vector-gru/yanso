@@ -20,26 +20,145 @@ import '../widgets/nso_weekday_header.dart';
 ///   2. Today banner — current Nso date
 ///   3. Month navigation — "Tònŋkin (August) 2026"
 ///   4. Weekday header row (8 columns)
-///   5. Calendar grid (8-column, scrollable)
-class CalendarPage extends ConsumerWidget {
+///   5. Calendar grid (8-column, swipeable PageView)
+///   6. Cultural objects banner
+///   7. Rest-day legend
+class CalendarPage extends ConsumerStatefulWidget {
   const CalendarPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CalendarPage> createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends ConsumerState<CalendarPage> {
+  // PageView sits on a large virtual list centred on a fixed origin epoch.
+  // We map month offsets from that epoch to page indices.
+  static final DateTime _epoch = DateTime(2020, 1, 1);
+
+  // Large enough that users will never scroll to the boundary.
+  static const int _pageCount = 2400; // 200 years either side of epoch
+
+  late final PageController _pageController;
+
+  // Whether the PageView is currently being driven programmatically (arrow
+  // buttons / goToToday) so we don't create a feedback loop.
+  bool _programmaticScroll = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final viewMonth = ref.read(calendarViewMonthProvider);
+    _pageController = PageController(initialPage: _pageIndexFor(viewMonth));
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  // --------------------------------------------------------------------------
+  // Helpers
+
+  /// Returns the page index that corresponds to [month].
+  int _pageIndexFor(DateTime month) {
+    final months =
+        (month.year - _epoch.year) * 12 + (month.month - _epoch.month);
+    return _pageCount ~/ 2 + months;
+  }
+
+  /// Returns the [DateTime] (first of month) for a given [pageIndex].
+  DateTime _monthForPageIndex(int pageIndex) {
+    final offset = pageIndex - _pageCount ~/ 2;
+    final totalMonths = _epoch.month - 1 + offset;
+    final year = _epoch.year + totalMonths ~/ 12;
+    final month = totalMonths % 12 + 1;
+    return DateTime(year, month, 1);
+  }
+
+  // --------------------------------------------------------------------------
+  // Arrow-button navigation: animate the PageView, which will then call
+  // _onPageChanged and update the provider.
+
+  void _goToPreviousMonth() {
+    _programmaticScroll = true;
+    _pageController
+        .previousPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        )
+        .then((_) => _programmaticScroll = false);
+  }
+
+  void _goToNextMonth() {
+    _programmaticScroll = true;
+    _pageController
+        .nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        )
+        .then((_) => _programmaticScroll = false);
+  }
+
+  void _goToToday() {
+    final now = DateTime.now();
+    final todayMonth = DateTime(now.year, now.month, 1);
+    _programmaticScroll = true;
+    _pageController
+        .animateToPage(
+          _pageIndexFor(todayMonth),
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeInOut,
+        )
+        .then((_) => _programmaticScroll = false);
+    // Update the provider immediately so the header refreshes without waiting.
+    ref.read(calendarViewMonthProvider.notifier).goToToday();
+  }
+
+  // Called by PageView on every settled page change (swipe or programmatic).
+  void _onPageChanged(int page) {
+    if (_programmaticScroll) return;
+    final month = _monthForPageIndex(page);
+    ref
+        .read(calendarViewMonthProvider.notifier)
+        .goToMonth(month.year, month.month);
+  }
+
+  // --------------------------------------------------------------------------
+
+  @override
+  Widget build(BuildContext context) {
     final today = ref.watch(todayNsoDateProvider);
     final viewMonth = ref.watch(calendarViewMonthProvider);
-    final notifier = ref.read(calendarViewMonthProvider.notifier);
     final yc = Theme.of(context).extension<YansoColors>()!;
 
+    // Keep the PageView in sync when the provider is changed from outside
+    // this widget (e.g. tapping a mini-month in the year view).
+    final expectedPage = _pageIndexFor(viewMonth);
+    if (_pageController.hasClients &&
+        _pageController.page?.round() != expectedPage &&
+        !_programmaticScroll) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _programmaticScroll = true;
+        _pageController
+            .animateToPage(
+              expectedPage,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            )
+            .then((_) => _programmaticScroll = false);
+      });
+    }
+
     return Scaffold(
-      // Kente-stripe bottom navigation hint
       appBar: AppBar(
         title: const Text("Ya Nso'"),
         actions: [
           IconButton(
             icon: const Icon(Icons.today_rounded),
             tooltip: 'Go to today',
-            onPressed: notifier.goToToday,
+            onPressed: _goToToday,
           ),
           _OverflowMenu(),
         ],
@@ -49,18 +168,23 @@ class CalendarPage extends ConsumerWidget {
           _TodayBanner(today: today, yc: yc),
           _MonthNavigationBar(
             viewMonth: viewMonth,
-            onPrevious: notifier.goToPreviousMonth,
-            onNext: notifier.goToNextMonth,
+            onPrevious: _goToPreviousMonth,
+            onNext: _goToNextMonth,
           ),
-          // Thin kente accent line above the header
           _KenteRuler(yc: yc),
           const NsoWeekdayHeader(),
           Expanded(
-            child: _CalendarGrid(viewMonth: viewMonth, today: today),
+            child: PageView.builder(
+              controller: _pageController,
+              onPageChanged: _onPageChanged,
+              itemCount: _pageCount,
+              itemBuilder: (context, index) {
+                final month = _monthForPageIndex(index);
+                return _CalendarGrid(viewMonth: month, today: today);
+              },
+            ),
           ),
-          // Cultural objects decorative strip
           const CulturalObjectsBanner(),
-          // Legend
           _RestDayLegend(yc: yc),
         ],
       ),
@@ -232,15 +356,20 @@ class _MonthNavigationBar extends StatelessWidget {
 // Calendar grid
 // ---------------------------------------------------------------------------
 
-class _CalendarGrid extends ConsumerWidget {
+class _CalendarGrid extends StatelessWidget {
   const _CalendarGrid({required this.viewMonth, required this.today});
 
   final DateTime viewMonth;
   final NsoDate today;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dates = ref.watch(calendarDatesForMonthProvider);
+  Widget build(BuildContext context) {
+    // Derive dates directly from the month passed by the PageView so that
+    // each page is fully self-contained and not tied to the provider state.
+    final dates = NsoCalendar.nsoDateRangeForGregorianMonth(
+      viewMonth.year,
+      viewMonth.month,
+    );
     final yc = Theme.of(context).extension<YansoColors>()!;
 
     // The first column offset is determined by the Nso weekday of the 1st.
