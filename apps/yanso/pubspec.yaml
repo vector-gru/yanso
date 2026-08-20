@@ -4,7 +4,7 @@ description: >
   An open-source Flutter app to preserve and promote the traditional
   calendar and cultural knowledge of the Nso people of Cameroon.
 publish_to: "none"
-version: 0.1.0+1
+version: 0.1.1+2
 
 environment:
   sdk: ^3.12.1

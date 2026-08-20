@@ -20,16 +20,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoutes.calendarName,
         // CalendarShell hosts both month and year views via IndexedStack.
         builder: (context, state) => const CalendarShell(),
-      ),
-      GoRoute(
-        path: AppRoutes.culture,
-        name: AppRoutes.cultureName,
-        builder: (context, state) => const CulturePage(),
-      ),
-      GoRoute(
-        path: AppRoutes.settings,
-        name: AppRoutes.settingsName,
-        builder: (context, state) => const SettingsPage(),
+        routes: [
+          // Culture and Settings are sub-routes of the calendar so that
+          // go_router places them on top of CalendarShell in the navigation
+          // stack. This gives them a proper back arrow that pops to the
+          // calendar rather than exiting the app.
+          GoRoute(
+            path: AppRoutes.culturePath,
+            name: AppRoutes.cultureName,
+            builder: (context, state) => const CulturePage(),
+          ),
+          GoRoute(
+            path: AppRoutes.settingsPath,
+            name: AppRoutes.settingsName,
+            builder: (context, state) => const SettingsPage(),
+          ),
+        ],
       ),
     ],
   );
